@@ -129,6 +129,17 @@ describe("config parser", function () {
         });
     });
 
+    it("accepts an IRI as an id", function () {
+        var data = testUtilities.cloneObj(testData.xml2jsConfig);
+        data["@"].id = 'https://www.example.com/apps/coolapp.shtml?sessionID=12345#main';
+
+        mockParsing(data);
+
+        configParser.parse(configPath, session, extManager, function (configObj) {
+            expect(configObj.id).toEqual("com.example.apps.coolapp");
+        });
+    });
+
     it("fails when id is undefined", function () {
         var data = testUtilities.cloneObj(testData.xml2jsConfig);
         data["@"].id = undefined;
